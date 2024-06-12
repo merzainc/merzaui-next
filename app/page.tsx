@@ -5,7 +5,7 @@ const IndexPage = () => {
   return (
     <main className='mx-auto max-w-7xl px-4 pt-8 sm:px-6'>
       <div className='mb-4 flex items-center gap-2.5'>
-        <Button suffix={<ImCodepen className='size-4' />} variant='danger'>
+        <Button suffix={<ImCodepen className='size-4' />} variant='primary'>
           Primary
         </Button>
         <Button variant='secondary'>Secondary</Button>
