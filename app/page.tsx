@@ -115,11 +115,11 @@ const IndexPage = () => {
         <Button
           onClick={() => setTheme(theme === 'dark-theme' ? 'light' : 'dark-theme')}
           leftSlot={<ImCodepen className='size-4' />}
-          theme='tertiary'
+          variant='danger-outline'
         >
           Primary
         </Button>
-        <Button theme='secondary'>Secondary</Button>
+        <Button variant='secondary'>Secondary</Button>
       </div>
 
       <Table

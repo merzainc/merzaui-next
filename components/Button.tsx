@@ -11,13 +11,14 @@ export type ButtonTheme =
   | 'secondary'
   | 'tertiary'
   | 'quaternary'
-  | 'primary-destructive'
-  | 'secondary-destructive';
+  | 'danger'
+  | 'danger-outline'
+  | 'success';
 
 export type ButtonProps = ButtonBaseProps &
   LinkBaseProps & {
     size?: ButtonSize;
-    theme?: ButtonTheme;
+    variant?: ButtonTheme;
     leftSlot?: ReactElement;
     rightSlot?: ReactElement;
     skipCapitalization?: boolean;
@@ -49,12 +50,12 @@ function getThemeClasses(theme: ButtonTheme, disabled = false) {
         disabled &&
           'bg-button-primary-disabled border-button-primary-disabled text-button-primary-disabled'
       );
-    case 'primary-destructive':
+    case 'danger':
       return mergeClasses(
-        'border-button-primary-destructive bg-button-primary-destructive text-button-primary-destructive shadow-xs',
-        !disabled && 'hocus:bg-button-primary-destructive-hover active:scale-98',
+        'border-button-danger bg-button-danger bg-button-danger text-button-danger shadow-xs',
+        !disabled && 'hocus:bg-button-danger-hover active:scale-98',
         disabled &&
-          'bg-button-primary-destructive-disabled border-button-primary-destructive-disabled text-button-primary-destructive-disabled'
+          'bg-button-danger-disabled border-button-danger-disabled text-button-danger-disabled'
       );
     case 'secondary':
       return mergeClasses(
@@ -63,12 +64,12 @@ function getThemeClasses(theme: ButtonTheme, disabled = false) {
         disabled &&
           'bg-button-secondary-disabled border-button-secondary-disabled text-button-secondary-disabled'
       );
-    case 'secondary-destructive':
+    case 'danger-outline':
       return mergeClasses(
-        'border-button-secondary-destructive bg-button-secondary-destructive text-button-secondary-destructive shadow-xs',
-        !disabled && 'hocus:bg-button-secondary-destructive-hover active:scale-98',
+        'border-button-secondary-danger bg-button-secondary-danger text-button-secondary-danger shadow-xs',
+        !disabled && 'hocus:bg-button-secondary-danger-hover active:scale-98',
         disabled &&
-          'bg-button-secondary-destructive-disabled border-button-secondary-destructive-disabled text-button-secondary-destructive-disabled'
+          'bg-button-secondary-danger-disabled border-button-secondary-danger-disabled text-button-secondary-danger-disabled'
       );
     case 'tertiary':
       return mergeClasses(
@@ -83,6 +84,12 @@ function getThemeClasses(theme: ButtonTheme, disabled = false) {
         !disabled && 'hocus:bg-button-quaternary-hover active:scale-98',
         disabled &&
           'bg-button-quaternary-disabled border-button-quaternary-disabled text-button-quaternary-disabled'
+      );
+    case 'success':
+      return mergeClasses(
+        'border border-palette-green10 bg-palette-green10  text-white shadow-none',
+        !disabled && 'hocus:bg-palette-green9 active:scale-98',
+        disabled && 'bg-palette-green7 border border-palette-green7 text-white'
       );
   }
 }
@@ -108,11 +115,11 @@ function getThemedIconClasses(theme: ButtonTheme) {
   switch (theme) {
     case 'primary':
       return 'text-button-primary-icon';
-    case 'primary-destructive':
+    case 'danger':
       return 'text-button-primary-destructive-icon';
     case 'secondary':
       return 'text-button-secondary-icon';
-    case 'secondary-destructive':
+    case 'danger-outline':
       return 'text-button-secondary-destructive-icon';
     case 'tertiary':
       return 'text-button-tertiary-icon';
@@ -158,7 +165,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     {
       children,
       size = 'sm',
-      theme = 'primary',
+      variant = 'primary',
       skipCapitalization = false,
       href,
       disabled,
@@ -174,13 +181,17 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     const isRightSlotIcon = rightSlot && isIconElement(rightSlot);
     const iconClasses =
       (isLeftSlotIcon || isRightSlotIcon) &&
-      mergeClasses(getIconSizeClasses(size), getThemedIconClasses(theme), disabled && 'opacity-60');
+      mergeClasses(
+        getIconSizeClasses(size),
+        getThemedIconClasses(variant),
+        disabled && 'opacity-60'
+      );
     const isSingleIconButton = (leftSlot || rightSlot) && !children;
 
     const twClasses = mergeClasses(
       `inline-flex border border-solid rounded-md font-medium gap-2 items-center whitespace-nowrap transition`,
       getSizeClasses(size),
-      getThemeClasses(theme, disabled),
+      getThemeClasses(variant, disabled),
       isSingleIconButton && getButtonIconClasses(size),
       disabled && 'cursor-default opacity-80 pointer-event-none',
       className
